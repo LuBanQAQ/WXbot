@@ -7,11 +7,13 @@
 - 接收并处理来自微信的消息。
 - 根据特定消息发送图片。
 - 在群聊中被提及时拍一拍群成员。
+- 发送 Minecraft 服务器状态图片。
+- 发送 OpenAI GPT 模型的回复。
 
 ## 要求
 
 - Python 3.x
-- `wcferry` 库
+-  [wcferry](https://github.com/lich0821/WeChatFerry)库
 
 ## 安装
 
@@ -20,12 +22,11 @@
     ```sh
     git clone https://github.com/LuBanQAQ/WXbot.git
     cd wxbot
-    ```
 
-3. 安装所需依赖：
+2. 安装所需依赖：
 
     ```sh
-    pip install wcferry pymysql
+    pip install wcferry
     ```
 
 ## 使用
@@ -40,6 +41,17 @@
 
 - `main.py`：初始化机器人并处理消息的主脚本。
 - `client.py`：包含与微信交互的方法的 `Wcf` 类。
+- `send_img.py`：根据特定消息发送图片。
+- `send_acg.py`：根据特定消息发送 ACG 图片。
+- `motd_utils.py`：发送 Minecraft 服务器状态图片。
+- `openai_client.py`：发送 OpenAI GPT 模型的回复。
+- `utils.py`：包含下载图片和管理白名单等工具函数。
+- 
+
+## 使用的API
+
+- motd:https://github.com/BlackBEDevelopment/MCBE-Server-Motd
+- setu:https://api.lolicon.app/
 
 ## 示例
 
@@ -54,3 +66,4 @@ wcf = Wcf()
 # 获取并打印你的 wxid
 wxid = wcf.get_self_wxid()
 print(f"我的 wxid 是: {wxid}")
+```
