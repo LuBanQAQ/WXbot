@@ -1,17 +1,21 @@
 from queue import Empty
 from threading import Thread
+
 from wcferry import Wcf, WxMsg
+
+groupList = ['48652991926@chatroom']
+from luogu import sendDTL
 from motd_utils import motd, motdbe
 from send_acg import sendACG
 from send_img import sendIMG
 from utils import inWhiteList, addWhiteList
 from openai_client import sendGPT
-
+from JM import sendJM
 wcf = Wcf()
 last_sendacg_time = [0]  # 使用列表来传递引用
 waiting = 30   # 发送acg图片的等待时间
-admin = 'wxid_xxx' # 管理员的wxid
-api_key = "xxx" # OpenAI的API Key
+admin = '' # 管理员的wxid
+api_key = "sk-" # OpenAI的API Key
 
 def processMsg(msg: WxMsg):
     if msg.from_group():
@@ -30,7 +34,7 @@ def testMsg(msg: WxMsg):
             wcf.send_image('https://motdbe.blackbe.work/status_img?host=play.easecation.net:19132', receiver)
             print(wcf.get_msg())
             print("发送了一条测试消息")
-
+# Start the scheduler in a separate thread without arguments
 def enableReceivingMsg():
     def innerWcFerryProcessMsg():
         while wcf.get_msg_types:
@@ -44,6 +48,8 @@ def enableReceivingMsg():
                 addWhiteList(msg, admin, wcf)
                 motd(msg, wcf)
                 motdbe(msg, wcf)
+                sendDTL(msg, wcf)
+                sendJM(msg, wcf)
             except Empty:
                 continue
             except Exception as e:
@@ -52,6 +58,5 @@ def enableReceivingMsg():
     print("启动消息监听...")
     wcf.enable_receiving_msg()
     Thread(target=innerWcFerryProcessMsg, name="ListenMessageThread", daemon=True).start()
-
 enableReceivingMsg()
 wcf.keep_running()
